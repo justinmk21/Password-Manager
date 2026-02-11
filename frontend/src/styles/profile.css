@@ -1,0 +1,26 @@
+.profile {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-profile {
+    display: flex;
+    justify-content: center;
+}
+
+.img-profile {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    border: 1px solid #ff6464;
+}
+.profile-name {
+    font-size: 16px;
+}
+
+.img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    border: 1px solid #ff6464;
+}

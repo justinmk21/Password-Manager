@@ -1,0 +1,14 @@
+.text-route:hover {
+    cursor: pointer;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 570px;
+    height: 415px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}

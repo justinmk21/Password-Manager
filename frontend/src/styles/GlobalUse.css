@@ -1,0 +1,39 @@
+.input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 335px;
+    height: 40px;
+    padding: 0 24px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.input:active {
+    border-color: #ff6464;
+}
+.input:focus {
+  outline: none;
+  color: #ff6464;
+  border-color: #ff6464;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4); /* inner glow effect */
+}
+
+.input::placeholder {
+    color: #e5e5e5;
+}
+
+p {
+    color: #545974;
+}
+
+label {
+    color: #545974;
+}
+
+h1 {
+    font-size: 64px;
+    font-weight: bold;
+    color: #545974;
+}

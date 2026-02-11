@@ -1,0 +1,30 @@
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 335px;
+    height: 40px;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #FF6464;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
+.btn-outline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 335px;
+    height: 40px;
+    border: 1px solid #FF6464;
+    border-radius: 10px;
+    color: #ff6464;
+    background-color: #fff;
+}
+
+.btn-outline:hover {
+    cursor: pointer;
+}
