@@ -7,19 +7,37 @@ import '../styles/addpassword.css';
 
 function AddPassword() {
     const [service_name, setServiceName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState('');
-
     const navToHome = useNavigate();
     const navToGen = useNavigate();
 
-    const addPassword = (e) => {
+    const addPassword = async (e) => {
         e.preventDefault();
-        api.post("/api/add-password/", { service_name, password }).then((res) =>{
-            if (res.data == 201) alert('Password created!')
-            else {alert('Failed to add password')}
-        })
-        .catch((err) => alert(err))
-    }
+
+        if (!service_name || !password) {
+            alert("Please fill in all fields.");
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const res = await api.post("/api/add-password/", { service_name, password });
+
+            if (res.status === 201 || res.status === 200) {
+                alert("Password created!");
+                setServiceName("");
+                setPassword("");
+                navToGen("/");
+            }
+        } catch (err) {
+            const errorMessage = err.response?.data?.detail || "failed to add password";
+            alert(errorMessage);
+            console.log("Post Error:", err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <article className="add-password-head">
             <Flex

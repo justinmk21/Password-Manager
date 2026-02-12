@@ -17,7 +17,6 @@ function Home() {
       .then((res) => res.data)
       .then((data) => {
         setPasswords(data);
-        console.log(data);
       })
       .catch((err) => alert(err));
   };

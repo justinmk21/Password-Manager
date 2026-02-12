@@ -2,9 +2,18 @@ import { Button, Menu, Portal } from "@chakra-ui/react";
 import DropDown from "./DropDown";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
 const Drop = () => {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
+
+    navigate("/logout");
+  }
+
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
@@ -40,7 +49,7 @@ const Drop = () => {
               value="Logout"
               color={"#545974"}
               cursor={"pointer"}
-              onClick={() => navigate("/logout")}
+              onClick={handleLogout}
             >
               Logout
             </Menu.Item>

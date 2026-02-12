@@ -4,19 +4,67 @@ import "../styles/passwordDetails.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePasswordContext } from "../context/PasswordContext.js";
 import DialogForm from "../components/UpdateForm.jsx";
+import api from "../api.js";
+import { useEffect, useState } from "react";
 
-function PasswordDetail({ serviceName, created_at }) {
+function PasswordDetail() {
   const { id } = useParams();
+  const [passwords, setPasswords] = useState([]);
+  const [selectedPassword, setSelectedPassword] = useState(null);
 
   const navigate = useNavigate();
+
+  const getPassword = () => {
+    api.get("/api/passwords/")
+      .then((res) => res.data)
+      .then((data) => {
+        setPasswords(data);
+      })
+      .catch((err) => alert((err)));
+  }
+
+  const deletePassword = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this?")) return;
+
+    try {
+      const res = await api.delete(`/api/delete-password/${id}/`);
+
+      if (res.status == 204) {
+        alert("Deleted");
+        navigate("/");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getPassword();
+  }, []);
+
+
+  useEffect(() => {
+    if (passwords.length > 0) {
+      const found = passwords.find(p => p.id === parseInt(id));
+      setSelectedPassword(found);
+    }
+  }, [passwords, id]);
 
   function Detail() {
     return (
       <article className="detail">
-        <h1 style={{ marginBottom: "100px" }}>FACEBOOK</h1>
+        <h1 style={{ marginBottom: "100px" }}>{selectedPassword?.service_name}</h1>
         <Flex marginBottom={"30px"} flexDirection={"column"}>
           <LuCalendar color="#e0e0e0" />
-          <p style={{ marginTop: "6px" }}>24 May 2022</p>
+          <p style={{ marginTop: "6px" }}>
+            {selectedPassword?.created_at
+            ? new Date(selectedPassword.created_at).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })
+            : "N/A"
+            }</p>
         </Flex>
         <Flex marginBottom={"30px"} flexDirection={"column"}>
           <LuLock color="#e0e0e0" />
@@ -30,6 +78,10 @@ function PasswordDetail({ serviceName, created_at }) {
             borderRadius={"10px"}
             border={"1px solid #ff6464"}
             backgroundColor={"#fff"}
+            onClick={(event) => {
+              event.stopPropagation();
+              deletePassword(id);
+            }}
           >
             DELETE
           </Button>

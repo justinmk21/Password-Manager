@@ -9,6 +9,9 @@ from .password_manager import PasswordManager
 from .encryption import encrypt_password, decrypt_password, KEY
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 FERNET_KEY = KEY
 cipher_suite = Fernet(FERNET_KEY)
@@ -49,3 +52,37 @@ class PasswordDeleteView(generics.DestroyAPIView):
         """Filter item to be deleted."""
         user = self.request.user
         return PasswordEntry.objects.filter(user=user)
+    
+# Update existing password
+class PasswordUpdateView(generics.UpdateAPIView):
+    """A class to update existing passwords."""
+    serializer_class = PasswordEntrySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Ensures users can only update their own passwords
+        return PasswordEntry.objects.filter(user=self.request.user)
+    
+    def perform_update(self, serializers):
+        # Check if a new password was provided in the request
+        raw_password = self.request.data.get('password')
+
+        if raw_password:
+            # Re-encrypt the new password before saving
+            encrypt_password = encrypt_password(raw_password)
+            serializers.save(password=encrypt_password)
+        else:
+            # If they only updated the 'service_name', save normally
+            serializers.save()
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=204)
+        except Exception as e:
+            return Response(status=400)
