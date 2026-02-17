@@ -2,9 +2,17 @@ import { Flex, Text } from "@chakra-ui/react";
 import "../styles/profile.css";
 import { LuLock, LuLogOut, LuMoon, LuUser, LuUserPen } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import api from "../api";
 
 function Profile() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    api.get("/api/user/me/")
+       .then((res) => setUser(res.data.username));
+  }, [])
   return (
     <section className="profile">
       <Flex width={"950px"} flexDirection={"column"}>
@@ -16,7 +24,7 @@ function Profile() {
         >
           <img className="img-profile" alt="Profile Picture" />
           <Text className="profile-name" fontWeight={"bolder"}>
-            KGOMOTSO MKHAWANE
+            {user}
           </Text>
           <Text color={"#e5e5e5"}>username</Text>
         </Flex>

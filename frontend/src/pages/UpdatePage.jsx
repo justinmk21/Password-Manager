@@ -77,6 +77,7 @@ function Update() {
                             <input
                                 className="input"
                                 type="text"
+                                
                                 placeholder="Website/ App name"
                                 onChange={(event) => setName(event.target.value)}
                                 />

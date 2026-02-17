@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import OnePass from "./pages/OnePass";
+import { LuLockKeyhole } from "react-icons/lu";
 
 function App() {
   function Logout() {
@@ -22,7 +23,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header />
+      <Header icon={<div><LuLockKeyhole size={42} color="#FF6464" /></div>} />
       <Routes>
         <Route
           path="/"

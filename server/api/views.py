@@ -8,7 +8,7 @@ from .models import PasswordEntry
 from .password_manager import PasswordManager
 from .encryption import encrypt_password, decrypt_password, KEY
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, filters
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -38,6 +38,12 @@ class UserPasswordListView(generics.ListAPIView):
     """Retrieve created passwords."""
     serializer_class = PasswordEntrySerializer
     permission_classes = [IsAuthenticated]
+
+    # Add the search filter
+    filter_backends = [filters.SearchFilter]
+
+    # searchable fileds
+    search_fields = ["service_name"]
 
     def get_queryset(self):
         """Enquire about passwords."""
@@ -86,3 +92,12 @@ class LogoutView(APIView):
             return Response(status=204)
         except Exception as e:
             return Response(status=400)
+
+class CurrentUserView(APIView):
+    "Get acces to user details"
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "username": request.user.username,
+        })

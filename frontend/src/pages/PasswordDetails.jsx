@@ -68,7 +68,7 @@ function PasswordDetail() {
         </Flex>
         <Flex marginBottom={"30px"} flexDirection={"column"}>
           <LuLock color="#e0e0e0" />
-          <p style={{ marginTop: "6px" }}>********</p>
+          <p style={{ marginTop: "6px" }}>{selectedPassword?.decrypted_password}</p>
         </Flex>
         <Flex marginTop={"100px"}>
           <Button

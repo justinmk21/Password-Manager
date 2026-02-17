@@ -9,7 +9,25 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [passwords, setPasswords] = useState([]);
+  const [searchItem, setSearchItem] = useState("");
   const navigate = useNavigate();
+
+  const handleSearch = () => {
+    api
+      .get("/api/passwords/", { params: { search: searchItem } })
+      .then((res) => {
+        setPasswords(res.data);
+      })
+      .catch((err) => {
+        console.error("Search Error:", err);
+      });
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key == "Enter") {
+      handleSearch(searchItem);
+    }
+  }
 
   const getPasswords = () => {
     api
@@ -23,6 +41,7 @@ function Home() {
 
   useEffect(() => {
     getPasswords();
+    handleSearch();
   }, []);
 
   const strongPasswords = [];
@@ -38,10 +57,11 @@ function Home() {
   });
 
   return (
-    <section>
+    <section className="home-page">
       <article className="article-page">
         <Flex
-          width={"950px"}
+          width={'100%'}
+          maxWidth={"950px"}
           height={"257px"}
           marginTop={"48px"}
           justifyContent={"space-between"}
@@ -78,7 +98,10 @@ function Home() {
           <input
             className="input"
             type="search"
-            placeholder="Search Websites..."
+            value={searchItem}
+            placeholder="Search Passwords..."
+            onChange={(event) => setSearchItem(event.target.value)}
+            onKeyDown={handleKeyDown}
           />
         </Flex>
         <article className="password-container">

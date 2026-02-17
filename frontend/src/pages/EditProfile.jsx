@@ -36,7 +36,7 @@ function EditProfile() {
           <input
             type="text"
             className="input"
-            placeholder="Kgomotso Mkhawane"
+            placeholder="username"
           />
         </Flex>
         <Flex marginTop={"100px"}>
